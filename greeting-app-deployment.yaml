@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+        - name: flask-container
+          image: python:3.9-slim
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: app-script
+              mountPath: /usr/src/app/app.py
+              subPath: app.py
+          command: ["/bin/sh", "-c", "pip install flask && python /usr/src/app/app.py"]
+      volumes:
+        - name: app-script
+          configMap:
+            name: flask-app-config
