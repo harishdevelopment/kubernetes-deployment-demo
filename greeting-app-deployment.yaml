@@ -9,6 +9,8 @@ spec:
       app: flask-app
   template:
     metadata:
+      annotations:
+        configmap-checksum: "{{ sha256sum .Files.Get \"greeting-app-configmap.yaml\" }}"
       labels:
         app: flask-app
     spec:
